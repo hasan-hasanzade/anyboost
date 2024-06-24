@@ -1,0 +1,93 @@
+@import '../../../scss/breakpoints.scss';
+@import '../../../scss/colors.scss';
+@import '../../../scss/mixins.scss';
+@import '../../../scss/typhography.scss';
+
+.hero {
+    padding: 70px 0 70px 0;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.title {
+    font-size: 200px;
+    font-weight: 800;
+    line-height: .9;
+    text-transform: uppercase;
+}
+
+.suptitle {
+    max-width: 280px;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px/18px;
+    padding: 16px 24px;
+    background-color: $darkPrimary;
+    border: 1px solid $primaryBlue;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text {
+    margin-top: 50px;
+   font-weight: 500;
+   font-size: 20px; 
+   line-height: 26px/20px;
+   max-width: 572px;
+}
+
+.buttons {
+    margin-top: 50px;
+    display: flex;
+    gap: 20px;
+}
+
+.body {
+    display: flex;
+    align-items: flex-start;
+}
+
+.images {
+    display: flex;
+    margin-left: -155px;
+}
+
+.terrorist {
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        background: rgba(56, 34, 37, 1);
+        // opacity: 0.35;
+        filter: blur(100px);
+        
+    }
+}
+
+.counter {
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        background: rgba(22, 36, 64, 1);
+        // opacity: 0.35;
+        filter: blur(200px);
+        
+    }
+}
