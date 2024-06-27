@@ -54,6 +54,66 @@ body {
   }
 }
 
+.react-tabs {
+  margin-top: 100px;
+}
+
+.react-tabs__tab-list {
+  display: flex;
+  gap: 40px;
+}
+
+.react-tabs__tab {
+  font-weight: 600;
+  font-size: 18px;
+  height: inherit;
+  cursor: pointer;
+  text-transform: uppercase;
+  height: 80px;
+  letter-spacing: 1px;
+}
+
+.react-tabs__tab--selected {
+
+  border-bottom: 2px solid $primaryBlue;
+}
+
+
+
+.rts___tabs___container {
+  padding: 0!important;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.rts___nav___btn {
+  height: 50px;
+  padding: 22px;
+}
+
+.rts___nav___btn___container {
+  padding: 0 5px 0 0px!important;
+}
+
+.rts___nav___btn:hover {
+  background-color: $primaryBlue!important;
+  transition: .5s all;
+}
+
+.rts___btn {
+  border-radius: 10px!important;
+  border: 1px solid rgba(75, 79, 91, 1)!important;
+}
+
+.rts___tab {
+  padding: 15px 40px!important;
+}
+
+.rts___tab___selected {
+  background-color: $primaryBlue!important;
+}
+
+
 
 // wrapper ============================================================================================================================================================================================================================================================================================================================================================================================================================================
 .wrapper {

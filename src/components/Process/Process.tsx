@@ -1,5 +1,9 @@
+'use client'
+
 import React from 'react'
 import styles from './process.module.scss';
+import BoostTabs from '../BoostTabs/BoostTabs';
+
 
 const Process = () => {
   return (
@@ -32,11 +36,8 @@ const Process = () => {
                     <div className={styles.text}>Твой рейтинг растет на глазах</div>
                 </div>
             </div>
-            <div className={styles.buttons}>
-                <button className={styles.btn}>CS2</button>
-                <button className={styles.btn}>FACEIT</button>
-            </div>
         </div>
+        <BoostTabs />
     </section>
   )
 }
