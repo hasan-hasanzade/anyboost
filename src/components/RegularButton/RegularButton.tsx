@@ -7,11 +7,7 @@ type RegularButtonProps = {
 };
 
 const RegularButton: React.FC<RegularButtonProps> = ({ title }) =>{
-  return (
-    <div className="button">
-        <Link className={styles.btn} href='#'>{title}</Link>
-    </div>
-  )
+  return (<Link className={styles.btn} href='#'>{title}</Link>)
 }
 
 export default RegularButton

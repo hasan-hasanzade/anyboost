@@ -1,17 +1,21 @@
+'use client'
+
 import React from 'react';
 import Link from 'next/link';
-import styles from './darkbutton.module.scss'
+import styles from './darkbutton.module.scss';
 
 type DarkButtonProps = {
-    title: string;
+  title: string;
+  link: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 };
 
-const DarkButton: React.FC<DarkButtonProps> = ({ title }) =>{
+const DarkButton: React.FC<DarkButtonProps> = ({ title, link, onClick }) => {
   return (
-    <div className="button">
-        <Link className={styles.btn} href='#'>{title}</Link>
-    </div>
-  )
-}
+    <Link className={styles.btn} href={link} onClick={onClick}>
+      {title}
+    </Link>
+  );
+};
 
-export default DarkButton
+export default DarkButton;

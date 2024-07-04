@@ -12,22 +12,42 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
+    @media (max-width: 768px) {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
 
 .currentCalc {
     display: flex;
-    gap: 50px;
+    align-items: center;
+    justify-content: center;
+    max-width: 550px;
+    @media (max-width: 768px) {
+        max-width: 100%;
+        width: 100%;
+        
+    }
 }
 
 .center {
     display: flex;
-    align-self: start;
     justify-content: center;
     flex-direction: column;
     height: 50px;
     border-left: 1px solid rgba(75, 79, 91, 1);
     border-right: 1px solid rgba(75, 79, 91, 1);
-    padding: 0 60px;
+    padding: 10px 60px;
+    @media (max-width: 1250px) {
+        padding: 10px;
+    }
+    @media (max-width: 768px) {
+        padding: 10px 60px;
+    }
+    @media (max-width: 552px) {
+        padding: 10px;
+    }
 }
 
 .currentTitle {
@@ -36,14 +56,21 @@
     font-size: 12px;
     color: rgba(75, 79, 91, 1);
     text-transform: uppercase;
+    @media (max-width: 372px) {
+        font-size: 10px;
+    }
 }
 
 .currentRating {
     display: flex;
     border: 1px solid rgba(75, 79, 91, 1);
     background-color: $darkSecondary;
-    padding: 26px 36px;
     border-radius: 15px;
+    height: 100px;
+    align-items: center;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 }
 
 .inputWrapper {
@@ -57,12 +84,22 @@
     font-weight: 700;
     font-size: 24px;
     width: 60px;
+    text-align: center;
+    @media (max-width: 398px) {
+        font-size: 20px;
+    }
 }
 
 .span {
     font-weight: 700;
     font-size: 24px;
     width: 70px;
+    @media (max-width: 1060px) {
+        font-size: 20px;
+    }
+    @media (max-width: 372px) {
+        font-size: 16px;
+    }
 }
 
 .add {
@@ -72,6 +109,18 @@
     justify-content: center;
     font-weight: 700;
     font-size: 24px;
+    padding: 35px;
+    @media (max-width: 400px) {
+        padding: 35px 20px 35px 10px;
+        font-size: 20px;
+    }
+    
+}
+
+.arrow {
+    @media (max-width: 1200px) {
+        display: none;
+    }
 }
 
 .subtract {
@@ -81,25 +130,73 @@
     justify-content: center;
     font-weight: 700;
     font-size: 24px;
-    height: 100%;
+    padding: 35px;
+    @media (max-width: 400px) {
+        padding: 35px 10px 35px 20px;
+        font-size: 20px;
+    }
+}
+
+.plus {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 24px;
+    padding: 35px;
+    @media (max-width: 400px) {
+        font-size: 20px;
+    }
+    @media (max-width: 360px){
+        padding: 35px 20px;
+    }
+}
+.minus {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 24px;
+    padding: 35px;
+    @media (max-width: 400px) {
+        font-size: 20px;
+    }
+    @media (max-width: 360px){
+        padding: 35px 20px;
+    }
 }
 
 
 .desiredRating {
     display: flex;
     background-color: $primaryBlue;
-    padding: 26px 36px;
     border-radius: 15px;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 }
 
 .item {
     display: flex;
+    align-items: center;
     gap: 10px;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 }
 
 .desiredCalc {
     display: flex;
-    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    max-width: 550px;
+    @media (max-width: 768px) {
+        max-width: 100%;
+        width: 100%;
+        
+    }
 }
 
 .desiredTitle {
@@ -108,17 +205,28 @@
     font-size: 12px;
     color: $darkSecondary;
     text-transform: uppercase;
+    @media (max-width: 372px) {
+        font-size: 10px;
+    }
 }
 .switches {
     margin-top: 50px;
     display: flex;
     justify-content: space-between;
+    @media (max-width: 768px) {
+        flex-wrap: wrap;
+    }
 }
 
 .column {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    @media (max-width: 540px) {
+        &:last-child {
+            margin-top: 10px;
+        }
+    }
 }
 
 .switchLabel {
@@ -134,12 +242,24 @@
     font-size: 14px;
     margin-left: 15px;
     text-transform: uppercase;
+    @media (max-width: 440px) {
+        font-size: 13px;
+    }
 }
 
 .switchBody {
     display: flex;
     justify-content: space-between;
     gap: 50px;
+    @media (max-width: 1250px) {
+        flex: 1 1 auto;
+    }
+    @media (max-width: 950px) {
+        gap: 10px;
+    }
+    @media (max-width: 768px) {
+        flex-wrap: wrap;
+    }
 }
 
 .switch {
@@ -181,6 +301,27 @@
 
 .priceColumn {
     width: 520px;
+    @media (max-width: 1250px) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 40%;
+    }
+    @media (max-width: 950px) {
+        width: 30%;
+    }
+    @media (max-width: 768px) {
+        width: 100%;
+        flex-direction: row;
+        margin-top: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+    }
+    @media (max-width: 460px) {
+        flex-wrap: wrap;
+    }
 }
 
 .priceText {
@@ -195,13 +336,25 @@
 }
 
 .submit {
+    text-align: center;
+    margin-top: 20px;
+    width: 50%;
     font-weight: 500;
     font-size: 14px;
     padding: 18px 42px;
     background-color: $primaryBlue;
     border-radius: 8px;
     margin-top: 30px;
+    @media (max-width: 768px) {
+        padding: 18px 82px;
+    }
+    @media (max-width: 460px) {
+        width: 100%;
+        padding: 18px 32px;
+    }
 }
+
+
 
 .switchTooltip {
     margin-left: 10px!important;

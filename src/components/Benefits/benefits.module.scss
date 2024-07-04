@@ -11,6 +11,9 @@
     display: flex;
     justify-content: center;
     gap: 30px;
+    @media (max-width: 900px) {
+        flex-wrap: wrap;
+    }
 }
 
 .item {
@@ -23,6 +26,9 @@
         &:hover {
           background: $primaryBlue;
         }
+      }
+      @media (max-width: 900px) {
+        width: 100%;
       }
  
 }

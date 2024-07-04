@@ -3,7 +3,7 @@ import styles from './boostcounter.module.scss';
 import BoostScrolledTabs from '../BoostScrolledTabs/BoostScrolledTabs';
 
 type BoostCounterProps = {
-  tabNames: string[];
+  tabNames: { id: string, name: string }[];
 };
 
 const BoostCounter: React.FC<BoostCounterProps> = ({ tabNames }) => {
@@ -19,5 +19,3 @@ const BoostCounter: React.FC<BoostCounterProps> = ({ tabNames }) => {
 };
 
 export default BoostCounter;
-
-

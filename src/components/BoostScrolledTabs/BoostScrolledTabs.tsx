@@ -1,58 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs, Tab } from "react-tabs-scrollable";
 import "react-tabs-scrollable/dist/rts.css";
-import Calculator from '../Calculator/Calculator';
+import PremierCalc from '../Сs2CalculatorTypes/PremierCalc/PremierCalc';
+import PremierCalibrationCalc from '../Сs2CalculatorTypes/PremierCalibrationCalc/PremierCalibrationCalc';
+import RankCalc from '../Сs2CalculatorTypes/ByRankCalc/ByRankCalc';
+import ByWinsCalc from '../Сs2CalculatorTypes/ByWinsCalc/ByWinsCalc';
+import CalibrationCalc from '../Сs2CalculatorTypes/CalibrationCalc/CalibrationCalc';
+import PartnersInRankCalc from '../Сs2CalculatorTypes/PartnersInRankCalc/PartnersInRankCalc';
+import PartnersInWinCalc from '../Сs2CalculatorTypes/PartnersInWinCalc/PartnersInWinCalc';
+import PartnersCalibrationCalc from '../Сs2CalculatorTypes/PartnersCalibrationCalc/PartnersCalibrationCalc';
+import FiByLevelCalc from '../FaceItCalculatorTypes copy/FiByLevelCalc/FiByLevelCalc';
+import FiByWinsCalc from '../FaceItCalculatorTypes copy/FiByWinsCalc/FiByWinsCalc';
+import FiCalibrationCalc from '../FaceItCalculatorTypes copy/FiCalibrationCalc/FiCalibrationCalc';
+import FiEloCalc from '../FaceItCalculatorTypes copy/FiEloCalc/FiEloCalc';
 
 type BoostScrolledTabsProps = {
-  tabNames: string[];
+  tabNames: { id: string, name: string }[];
 };
 
 const BoostScrolledTabs: React.FC<BoostScrolledTabsProps> = ({ tabNames }) => {
-  const [activeTab, setActiveTab] = React.useState(0);
+  const [activeTab, setActiveTab] = useState(0);
 
   const onTabClick = (e: React.MouseEvent, index: number) => {
     setActiveTab(index);
   };
 
-  type TabScreenProps = {
-    activeTab: number;
-    idx: number;
+  const renderCalculator = (id: string) => {
+    switch (id) {
+      case 'cs2_premier':
+        return <PremierCalc />;
+      case 'cs2_premier_calibration':
+        return <PremierCalibrationCalc />;
+      case 'cs2_rank':
+        return <RankCalc />;
+      case 'cs2_wins':
+        return <ByWinsCalc />;
+      case 'cs2_calibration':
+        return <CalibrationCalc />;
+      case 'cs2_partners_rank':
+        return <PartnersInRankCalc />;
+      case 'cs2_partners_wins':
+        return <PartnersInWinCalc />;
+      case 'cs2_partners_calibration':
+        return <PartnersCalibrationCalc />;
+      case 'faceit_elo':
+        return <FiEloCalc />;
+      case 'faceit_level':
+        return <FiByLevelCalc />;
+      case 'faceit_wins':
+        return <FiByWinsCalc />;
+      case 'faceit_calibration':
+        return <FiCalibrationCalc />;
+      default:
+        return null;
+    }
   };
-
-  const TabScreen: React.FC<TabScreenProps> = ({ activeTab, idx, children }) => {
-    return (
-      <div
-        className="animate__animated animate__fadeInLeft"
-        role="tabpanel"
-      >
-        {activeTab === idx && <div className="mx-4">{children}</div>}
-      </div>
-    );
-  };
-
-  const calculatorProps = [
-    { type: "premier", inputValue:0, count: 200, elo: "Elo", currentRating: 0, desiredRating: 'Желаемый рейтинг', images: null },
-    { type: "premier_calibration", inputValue: 0, count: null, elo: ['Без звания', 'Серый', 'Голубой', 'Синий', 'Фиолетовый', 'Розовый', 'Красный', 'Золотой'], currentRating: null, desiredRating: 'Кол-во побед', images: ['/calc/levels/0.png', '/calc/levels/1.png', '/calc/levels/2.png', '/calc/levels/3.png', '/calc/levels/4.png', '/calc/levels/5.png', '/calc/levels/6.png', '/calc/levels/7.png'] },
-    { type: "by_rank", inputValue: null, count: null, elo: ['Серебро 1', 'Серебро 2', 'Серебро 3', 'Серебро 4', 'Серебро-Элита', 'Серебро-Великий Магистр', 'Золотая Звезда-1', 'Золотая Звезда-2', 'Золотая Звезда-3', 'Золотая Звезда-Магистр', 'Магистр Хранитель-1', 'Магистр Хранитель-2', 'Магистр Хранитель-Элита', 'Заслуженный Магистр-Хранитель', 'Магистр Легендарный Беркут', 'Магистр Легендарный Беркут-Магистр', 'Магистр Великий Магистр Высшего Ранга', 'Магистр Всемирная Элита'], currentRating: null, desiredRating: 'Желаемый рейтинг', images: ['/calc/ranks/1.png', '/calc/ranks/2.png', '/calc/ranks/3.png', '/calc/ranks/4.png', '/calc/ranks/5.png', '/calc/ranks/6.png', '/calc/ranks/7.png', '/calc/ranks/8.png', '/calc/ranks/9.png', '/calc/ranks/10.png', '/calc/ranks/11.png', '/calc/ranks/12.png', '/calc/ranks/13.png', '/calc/ranks/14.png', '/calc/ranks/15.png', '/calc/ranks/16.png', '/calc/ranks/17.png', '/calc/ranks/18.png'] },
-    { type: "by_wins", inputValue: null, count: null, elo: ['Серебро 1', 'Серебро 2', 'Серебро 3', 'Серебро 4', 'Серебро-Элита', 'Серебро-Великий Магистр', 'Золотая Звезда-1', 'Золотая Звезда-2', 'Золотая Звезда-3', 'Золотая Звезда-Магистр', 'Магистр Хранитель-1', 'Магистр Хранитель-2', 'Магистр Хранитель-Элита', 'Заслуженный Магистр-Хранитель', 'Магистр Легендарный Беркут', 'Магистр Легендарный Беркут-Магистр', 'Магистр Великий Магистр Высшего Ранга', 'Магистр Всемирная Элита'], currentRating: null, desiredRating: 'Кол-во побед', images: ['/calc/ranks/1.png', '/calc/ranks/2.png', '/calc/ranks/3.png', '/calc/ranks/4.png', '/calc/ranks/5.png', '/calc/ranks/6.png', '/calc/ranks/7.png', '/calc/ranks/8.png', '/calc/ranks/9.png', '/calc/ranks/10.png', '/calc/ranks/11.png', '/calc/ranks/12.png', '/calc/ranks/13.png', '/calc/ranks/14.png', '/calc/ranks/15.png', '/calc/ranks/16.png', '/calc/ranks/17.png', '/calc/ranks/18.png'] },
-    { type: "calibration", inputValue: null, count: null, elo: ['Серебро 1', 'Серебро 2', 'Серебро 3', 'Серебро 4', 'Серебро-Элита', 'Серебро-Великий Магистр', 'Золотая Звезда-1', 'Золотая Звезда-2', 'Золотая Звезда-3', 'Золотая Звезда-Магистр', 'Магистр Хранитель-1', 'Магистр Хранитель-2', 'Магистр Хранитель-Элита', 'Заслуженный Магистр-Хранитель', 'Магистр Легендарный Беркут', 'Магистр Легендарный Беркут-Магистр', 'Магистр Великий Магистр Высшего Ранга', 'Магистр Всемирная Элита'], currentRating: null, desiredRating: 'Кол-во побед', images: ['/calc/levels/0.png', '/calc/levels/1.png', '/calc/levels/2.png', '/calc/levels/3.png', '/calc/levels/4.png', '/calc/levels/5.png', '/calc/levels/6.png', '/calc/levels/7.png'] },
-  ];
 
   return (
     <div className="App">
-      <Tabs
-        activeTab={activeTab}
-        onTabClick={onTabClick}
-        hideNavBtnsOnMobile={false}
-      >
-        {tabNames.map((name, index) => (
-          <Tab key={index}>{name}</Tab>
+      <Tabs activeTab={activeTab} onTabClick={onTabClick} hideNavBtnsOnMobile={false}>
+        {tabNames.map((tab, index) => (
+          <Tab key={tab.id}>{tab.name}</Tab>
         ))}
       </Tabs>
-      {tabNames.map((name, index) => (
-        <TabScreen activeTab={activeTab} idx={index} key={index}>
-          <Calculator {...calculatorProps[index]} />
-        </TabScreen>
+      {tabNames.map((tab, index) => (
+        <div className={`tabpanel ${activeTab === index ? 'active' : ''}`} key={tab.id}>
+          {activeTab === index && renderCalculator(tab.id)}
+        </div>
       ))}
     </div>
   );

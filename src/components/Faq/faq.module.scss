@@ -5,12 +5,23 @@
 
 .faq {
     padding: 50px 0;
-  }
+    @media (max-width: 480px) {
+        padding: 0;
+    }
+
+}
+
+.wrapper {
+    border-bottom: 4px solid $darkSecondary;
+}
   
 .title {
     text-align: center;
     font-weight: 700;
     font-size: 48px;
+    @media (max-width: 1024px) {
+        font-size: 32px;
+    }
 } 
 
 .body {
