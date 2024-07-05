@@ -1,5 +1,5 @@
-'use client'
 
+'use client'
 import React, { useState } from 'react';
 import styles from '../../Calculator/calculator.module.scss';
 import Image from 'next/image';
@@ -25,11 +25,11 @@ const PremierCalc = () => {
     if (options.priority) price += 200;
     if (options.express) price += 300;
     if (options.stream) price += 100;
-    const eloDifference = Math.max(0, desiredRating - currentRating) / 200 * 500;
+    const eloDifference = Math.max(0, desiredRating - currentRating) * 0.55;
     price += eloDifference;
-    return price;
+    return price.toFixed(2);
   };
-  
+
   const handleOptionChange = (option: string) => {
     setOptions((prevOptions) => ({
       ...prevOptions,
@@ -61,6 +61,17 @@ const PremierCalc = () => {
     setDesiredRating((prevRating) => Math.max(currentRating, prevRating - 200));
   };
 
+  const handleCurrentRatingChange = (e) => {
+    const value = Math.max(0, parseInt(e.target.value) || 0);
+    setCurrentRating(value);
+    setDesiredRating((desired) => Math.max(desired, value));
+  };
+
+  const handleDesiredRatingChange = (e) => {
+    const value = Math.max(currentRating, parseInt(e.target.value) || 0);
+    setDesiredRating(value);
+  };
+
   return (
     <div className={styles.body}>
       <div className={styles.calcs}>
@@ -74,7 +85,7 @@ const PremierCalc = () => {
                   <input
                     className={styles.input}
                     value={currentRating}
-                    readOnly
+                    onChange={handleCurrentRatingChange}
                   />
                   <span className={styles.span}>
                     ELO
@@ -98,7 +109,7 @@ const PremierCalc = () => {
                   <input
                     className={styles.input}
                     value={desiredRating}
-                    readOnly
+                    onChange={handleDesiredRatingChange}
                   />
                   <span className={styles.span}>
                     ELO
