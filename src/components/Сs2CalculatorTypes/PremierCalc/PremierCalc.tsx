@@ -109,9 +109,10 @@ const PremierCalc = () => {
 
 
   const handleCurrentRatingChange = (e) => {
-    const value = Math.max(0, Math.min(30000, parseInt(e.target.value) || 0));
-
-    if (/^[0-9]{0,5}$/.test(value)) {
+    const numericValue = parseInt(e.target.value) || 0;
+    const value = Math.max(0, Math.min(30000, numericValue));
+  
+    if (/^[0-9]{0,5}$/.test(value.toString())) {
       setCurrentRating(value);
       if (value === 30000) {
         setDesiredRating((desired) => Math.max(desired, value));
