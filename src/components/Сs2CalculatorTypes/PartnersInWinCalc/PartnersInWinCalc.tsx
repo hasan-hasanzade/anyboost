@@ -21,11 +21,14 @@ const PartnersInWinCalc = () => {
 
   const basePrice = 0;
   const calculatePrice = () => {
-    let price = basePrice + (wins * 500);
-    if (options.priority) price += 200;
-    if (options.express) price += 300;
-    if (options.stream) price += 100;
-    return price;
+    let price = basePrice + (wins * 20);
+    if (options.solo) price *= 1.55;
+    if (options.priority) price *= 1.25;
+    if (options.express) price *= 1.6;
+    if (options.stream) price *= 1.15;
+    if (options.steamOffline) price *= 1.0;
+
+    return price.toFixed(2);
   };
 
   const handleOptionChange = (option) => {

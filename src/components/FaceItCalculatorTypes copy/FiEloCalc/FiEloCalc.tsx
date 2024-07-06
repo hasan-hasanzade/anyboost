@@ -17,6 +17,7 @@ const FiEloCalc = () => {
 
   const [currentRating, setCurrentRating] = useState(0);
   const [desiredRating, setDesiredRating] = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
   const basePrice = 0;
 
   const images = [
@@ -49,13 +50,54 @@ const FiEloCalc = () => {
 
   const calculatePrice = () => {
     let price = basePrice;
-    if (options.priority) price += 200;
-    if (options.express) price += 300;
-    if (options.stream) price += 100;
-    const eloDifference = Math.max(0, desiredRating - currentRating) / 25 * 500;
-    price += eloDifference;
-    return price;
-  };
+    const eloDifference = Math.max(0, desiredRating - currentRating);
+
+    const ratingRanges = [
+        { max: 500, price: 2.92 },
+        { max: 750, price: 3.04 },
+        { max: 1050, price: 3.08 },
+        { max: 1200, price: 3.96 },
+        { max: 1350, price: 5.2 },
+        { max: 1530, price: 5.6 },
+        { max: 1750, price: 6 },
+        { max: 2000, price: 7.4 },
+        { max: 2200, price: 15 },
+        { max: 2400, price: 18.4 },
+        { max: 2500, price: 19.6 },
+        { max: 2600, price: 27.6 },
+        { max: 2700, price: 29 },
+        { max: 2800, price: 31.2 },
+        { max: 2900, price: 34 },
+        { max: 3000, price: 38.4 }
+    ];
+
+    if (eloDifference > 0) {
+        let remainingDifference = eloDifference;
+        let currentThreshold = currentRating;
+
+        for (let i = 0; i < ratingRanges.length; i++) {
+            const range = ratingRanges[i];
+            const rangeMax = Math.min(range.max, desiredRating);
+            if (currentThreshold < rangeMax) {
+                const rangeDifference = rangeMax - currentThreshold;
+                price += rangeDifference * range.price;
+                currentThreshold = rangeMax;
+                remainingDifference -= rangeDifference;
+            }
+            if (remainingDifference <= 0) break;
+        }
+    }
+
+    if (options.noAccountTransfer) price *= 1.2;
+    if (options.solo) price *= 1.55;
+    if (options.priority) price *= 1.25;
+    if (options.express) price *= 1.6;
+    if (options.stream) price *= 1.15;
+    if (options.steamOffline) price *= 1.0;
+
+    return price.toFixed(2);
+};
+
 
   const handleOptionChange = (option: string) => {
     setOptions((prevOptions) => ({
@@ -66,26 +108,83 @@ const FiEloCalc = () => {
 
   const handleAddCurrentRating = () => {
     setCurrentRating((prevRating) => {
-      const newRating = prevRating + 25;
-      setDesiredRating((desired) => Math.max(desired, newRating));
-      return newRating;
+      if (prevRating === 2975) {
+        const newRating = prevRating;
+        setDesiredRating((desired) => Math.max(desired));
+        return newRating;
+      } else {
+        const newRating = prevRating + 25;
+        setDesiredRating((desired) => Math.max(desired, newRating + 25));
+        return newRating;
+      }
+      
     });
   };
 
   const handleSubtractCurrentRating = () => {
     setCurrentRating((prevRating) => {
       const newRating = Math.max(0, prevRating - 25);
-      setDesiredRating((prevDesired) => Math.max(newRating, prevDesired - 25));
+      setDesiredRating((prevDesired) => Math.max(newRating + 25, prevDesired));
       return newRating;
     });
   };
 
   const handleAddDesiredRating = () => {
-    setDesiredRating((prevRating) => prevRating + 25);
+    if (desiredRating === 3000) {
+      setDesiredRating((prevRating) => Math.max(currentRating, prevRating));
+    } else {
+      setDesiredRating((prevRating) => Math.max(currentRating + 25, prevRating + 25));
+    }
+    setErrorMessage('');
   };
 
   const handleSubtractDesiredRating = () => {
-    setDesiredRating((prevRating) => Math.max(currentRating, prevRating - 25));
+    if (currentRating === 3000) {
+      setDesiredRating((prevRating) => Math.max(currentRating, prevRating));
+    } else {
+      setDesiredRating((prevRating) => Math.max(currentRating + 25, prevRating - 25));
+    }
+  };
+
+
+  const handleCurrentRatingChange = (e) => {
+    const value = Math.max(0, Math.min(3000, parseInt(e.target.value) || 0));
+
+    if (/^[0-9]{0,4}$/.test(value)) {
+      setCurrentRating(value);
+      if (value === 3000) {
+        setDesiredRating((desired) => Math.max(desired, value));
+      } else {
+        setDesiredRating((desired) => Math.max(desired, value + 25));
+      }
+      setErrorMessage('');
+    }
+  };
+
+  const handleDesiredRatingChange = (e) => {
+    const value = e.target.value.trim();
+    if (value === '') {
+      setDesiredRating(currentRating + 25);
+      setErrorMessage('Желаемый рейтинг не может быть пустым.');
+    } else {
+      const numericValue = parseInt(value);
+      if (isNaN(numericValue) || numericValue < currentRating || numericValue > 35000) {
+        setErrorMessage('Желаемый рейтинг должен быть числом между текущим рейтингом и 35000.');
+      } else if (numericValue < currentRating + 25) {
+        setErrorMessage('Минимальный заказ 25 Elo.');
+      } else {
+        setDesiredRating(numericValue);
+        setErrorMessage('');
+      }
+    }
+  };
+
+  const handleDesiredRatingInputChange = (e) => {
+    const value = e.target.value;
+    if (/^[0-9]{0,4}$/.test(value)) {
+      setDesiredRating(value);
+      setErrorMessage('');
+    }
   };
 
   return (
@@ -105,10 +204,10 @@ const FiEloCalc = () => {
               <div className={styles.center}>
                 <div className={styles.currentTitle}>ТЕКУЩИЙ РЕЙТИНГ</div>
                 <div className={styles.inputWrapper}>
-                  <input
+                <input
                     className={styles.input}
                     value={currentRating}
-                    readOnly
+                    onChange={handleCurrentRatingChange}
                   />
                   <span className={styles.span}>
                     ELO
@@ -129,10 +228,11 @@ const FiEloCalc = () => {
               <div className={styles.center}>
                 <div className={styles.desiredTitle}>Желаемый Рейтинг</div>
                 <div className={styles.inputWrapper}>
-                  <input
+                <input
                     className={styles.input}
                     value={desiredRating}
-                    readOnly
+                    onChange={handleDesiredRatingInputChange}
+                    onBlur={handleDesiredRatingChange}
                   />
                   <span className={styles.span}>
                     ELO

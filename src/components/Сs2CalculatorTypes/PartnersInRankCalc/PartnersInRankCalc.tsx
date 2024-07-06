@@ -23,11 +23,18 @@ const PartnersInRankCalc = () => {
   const basePrice = 0;
   const calculatePrice = () => {
     let price = basePrice;
-    if (options.priority) price += 200;
-    if (options.express) price += 300;
-    if (options.stream) price += 100;
-    price += (desiredRatingIndex - currentRatingIndex) * 700; // Calculate price based on desired rating
-    return price;
+    for (let i = currentRatingIndex + 1; i <= desiredRatingIndex; i++) {
+      price += rankPrices[elo[i]];
+    }
+
+    if (options.noAccountTransfer) price *= 1.2;
+    if (options.solo) price *= 1.55;
+    if (options.priority) price *= 1.25;
+    if (options.express) price *= 1.6;
+    if (options.stream) price *= 1.15;
+    if (options.steamOffline) price *= 1.0;
+
+    return price.toFixed(2);
   };
 
   const handleOptionChange = (option) => {
@@ -79,12 +86,33 @@ const PartnersInRankCalc = () => {
     "/calc/partner-ranks/18.png",
   ];
 
+  const rankPrices = {
+    "Серебро-1": 100,
+    "Серебро-2": 100,
+    "Серебро-3": 100,
+    "Серебро-4": 100,
+    "Серебро-Элита": 100,
+    "Серебро-Великий Магистр": 100,
+    "Золотая Звезда-1": 165,
+    "Золотая Звезда-2": 165,
+    "Золотая Звезда-3": 165,
+    "Золотая Звезда-Магистр": 165,
+    "Магистр Хранитель-1": 210,
+    "Магистр Хранитель-2": 210,
+    "Магистр Хранитель-Элита": 210,
+    "Заслуженный Магистр-Хранитель": 290,
+    "Легендарный Беркут": 390,
+    "Легендарный Беркут-Магистр": 500,
+    "Великий Магистр Высшего Ранга": 730,
+    "Всемирная Элита": 1340,
+  };
+
   const handleCurrentRatingChange = (direction) => {
     setCurrentRatingIndex((prevIndex) => {
       const newIndex = prevIndex + direction;
       if (newIndex < 0) return 0;
       if (newIndex >= elo.length) return elo.length - 1;
-      setDesiredRatingIndex(newIndex);
+      setDesiredRatingIndex(newIndex); 
       return newIndex;
     });
   };
@@ -94,7 +122,6 @@ const PartnersInRankCalc = () => {
       const newIndex = prevIndex + direction;
       if (newIndex < currentRatingIndex) return currentRatingIndex;
       if (newIndex >= elo.length) return elo.length - 1;
-      setPrice((prevPrice) => prevPrice + 700 * direction);
       return newIndex;
     });
   };

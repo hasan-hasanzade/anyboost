@@ -22,11 +22,18 @@ const FiByLevelCalc = () => {
   const basePrice = 0;
   const calculatePrice = () => {
     let price = basePrice;
-    if (options.priority) price += 200;
-    if (options.express) price += 300;
-    if (options.stream) price += 100;
-    price += (desiredRatingIndex - currentRatingIndex) * 700; // Calculate price based on desired rating
-    return price;
+    for (let i = currentRatingIndex + 1; i <= desiredRatingIndex; i++) {
+      price += levelPrices[elo[i]];
+    }
+
+    if (options.noAccountTransfer) price *= 1.2;
+    if (options.solo) price *= 1.55;
+    if (options.priority) price *= 1.25;
+    if (options.express) price *= 1.6;  
+    if (options.stream) price *= 1.15;
+    if (options.steamOffline) price *= 1.0;
+
+    return price.toFixed(2);
   };
 
   const handleOptionChange = (option) => {
@@ -65,12 +72,26 @@ const FiByLevelCalc = () => {
 
   ];
 
+  const levelPrices = {
+    "Без уровня": 0,
+    "1 уровень": 0,
+    "2 уровень": 430,
+    "3 уровень": 510,
+    "4 уровень": 550,
+    "5 уровень": 570,
+    "6 уровень": 650,
+    "7 уровень": 810,
+    "8 уровень": 990,
+    "9 уровень": 1450,
+    "10 уровень": 1750,
+  };
+
   const handleCurrentRatingChange = (direction) => {
     setCurrentRatingIndex((prevIndex) => {
       const newIndex = prevIndex + direction;
       if (newIndex < 0) return 0;
       if (newIndex >= elo.length) return elo.length - 1;
-      setDesiredRatingIndex(newIndex); // Update desired rating to match the current rating
+      setDesiredRatingIndex(newIndex); 
       return newIndex;
     });
   };
@@ -80,7 +101,6 @@ const FiByLevelCalc = () => {
       const newIndex = prevIndex + direction;
       if (newIndex < currentRatingIndex) return currentRatingIndex;
       if (newIndex >= elo.length) return elo.length - 1;
-      setPrice((prevPrice) => prevPrice + 700 * direction); // Update price
       return newIndex;
     });
   };

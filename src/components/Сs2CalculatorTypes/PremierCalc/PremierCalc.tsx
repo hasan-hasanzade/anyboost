@@ -1,12 +1,12 @@
-
 'use client'
+
 import React, { useState } from 'react';
 import styles from '../../Calculator/calculator.module.scss';
 import Image from 'next/image';
 import { Tooltip } from 'react-tooltip';
 import Link from 'next/link';
 
-const PremierCalc = () => {
+const PremierCalc = ({ tabType }) => {
   const [options, setOptions] = useState({
     noAccountTransfer: false,
     solo: false,
@@ -18,19 +18,49 @@ const PremierCalc = () => {
 
   const [currentRating, setCurrentRating] = useState(0);
   const [desiredRating, setDesiredRating] = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const basePrice = 0;
 
   const calculatePrice = () => {
     let price = basePrice;
-    if (options.priority) price += 200;
-    if (options.express) price += 300;
-    if (options.stream) price += 100;
-    const eloDifference = Math.max(0, desiredRating - currentRating) * 0.55;
-    price += eloDifference;
-    return price.toFixed(2);
-  };
+    const eloDifference = Math.max(0, desiredRating - currentRating);
 
-  const handleOptionChange = (option: string) => {
+    const ratingRanges = [
+        { max: 10000, price: 0.55 },
+        { max: 15000, price: 0.78 },
+        { max: 25000, price: 1.1 },
+        { max: 35000, price: 2.3 },
+    ];
+
+    if (eloDifference > 0) {
+        let remainingDifference = eloDifference;
+        let currentThreshold = currentRating;
+
+        for (let i = 0; i < ratingRanges.length; i++) {
+            const range = ratingRanges[i];
+            const rangeMax = Math.min(range.max, desiredRating);
+            if (currentThreshold < rangeMax) {
+                const rangeDifference = rangeMax - currentThreshold;
+                price += rangeDifference * range.price;
+                currentThreshold = rangeMax;
+                remainingDifference -= rangeDifference;
+            }
+            if (remainingDifference <= 0) break;
+        }
+    }
+
+    if (options.noAccountTransfer) price *= 1.2;
+    if (options.solo) price *= 1.55;
+    if (options.priority) price *= 1.25;
+    if (options.express) price *= 1.6;
+    if (options.stream) price *= 1.15;
+    if (options.steamOffline) price *= 1.0;
+
+    return price.toFixed(2);
+};
+
+  const handleOptionChange = (option) => {
     setOptions((prevOptions) => ({
       ...prevOptions,
       [option]: !prevOptions[option],
@@ -39,37 +69,83 @@ const PremierCalc = () => {
 
   const handleAddCurrentRating = () => {
     setCurrentRating((prevRating) => {
-      const newRating = prevRating + 200;
-      setDesiredRating((desired) => Math.max(desired, newRating));
-      return newRating;
+      if (prevRating === 29800) {
+        const newRating = prevRating;
+        setDesiredRating((desired) => Math.max(desired));
+        return newRating;
+      } else {
+        const newRating = prevRating + 200;
+        setDesiredRating((desired) => Math.max(desired, newRating + 200));
+        return newRating;
+      }
+      
     });
   };
 
   const handleSubtractCurrentRating = () => {
     setCurrentRating((prevRating) => {
       const newRating = Math.max(0, prevRating - 200);
-      setDesiredRating((prevDesired) => Math.max(newRating, prevDesired - 200));
+      setDesiredRating((prevDesired) => Math.max(newRating + 200, prevDesired));
       return newRating;
     });
   };
 
   const handleAddDesiredRating = () => {
-    setDesiredRating((prevRating) => prevRating + 200);
+    if (desiredRating === 30000) {
+      setDesiredRating((prevRating) => Math.max(currentRating, prevRating));
+    } else {
+      setDesiredRating((prevRating) => Math.max(currentRating + 200, prevRating + 200));
+    }
+    setErrorMessage('');
   };
 
   const handleSubtractDesiredRating = () => {
-    setDesiredRating((prevRating) => Math.max(currentRating, prevRating - 200));
+    if (currentRating === 30000) {
+      setDesiredRating((prevRating) => Math.max(currentRating, prevRating));
+    } else {
+      setDesiredRating((prevRating) => Math.max(currentRating + 200, prevRating - 200));
+    }
   };
 
+
   const handleCurrentRatingChange = (e) => {
-    const value = Math.max(0, parseInt(e.target.value) || 0);
-    setCurrentRating(value);
-    setDesiredRating((desired) => Math.max(desired, value));
+    const value = Math.max(0, Math.min(30000, parseInt(e.target.value) || 0));
+
+    if (/^[0-9]{0,5}$/.test(value)) {
+      setCurrentRating(value);
+      if (value === 30000) {
+        setDesiredRating((desired) => Math.max(desired, value));
+      } else {
+        setDesiredRating((desired) => Math.max(desired, value + 200));
+      }
+      setErrorMessage('');
+    }
   };
 
   const handleDesiredRatingChange = (e) => {
-    const value = Math.max(currentRating, parseInt(e.target.value) || 0);
-    setDesiredRating(value);
+    const value = e.target.value.trim();
+    if (value === '') {
+      setDesiredRating(currentRating + 200);
+      setErrorMessage('Желаемый рейтинг не может быть пустым.');
+    } else {
+      const numericValue = parseInt(value);
+      if (isNaN(numericValue) || numericValue < currentRating || numericValue > 35000) {
+        setErrorMessage('Желаемый рейтинг должен быть числом между текущим рейтингом и 35000.');
+      } else if (numericValue < currentRating + 200) {
+        setErrorMessage('Минимальный заказ 25 Elo.');
+      } else {
+        setDesiredRating(numericValue);
+        setErrorMessage('');
+      }
+    }
+  };
+
+  const handleDesiredRatingInputChange = (e) => {
+    const value = e.target.value;
+    if (/^[0-9]{0,5}$/.test(value)) {
+      setDesiredRating(value);
+      setErrorMessage('');
+    }
   };
 
   return (
@@ -86,6 +162,7 @@ const PremierCalc = () => {
                     className={styles.input}
                     value={currentRating}
                     onChange={handleCurrentRatingChange}
+                    disabled={tabType === 'premier'}
                   />
                   <span className={styles.span}>
                     ELO
@@ -99,7 +176,7 @@ const PremierCalc = () => {
         <div className={styles.arrow}>
           <Image src="/calc/straight.svg" alt="стрелка" width={42} height={40} />
         </div>
-        <div className={styles.item}>
+        <div className={styles.itemPremier}>
           <div className={styles.desiredRating}>
             <div className={styles.desiredCalc}>
               <button className={styles.subtract} onClick={handleSubtractDesiredRating}>-200</button>
@@ -109,7 +186,8 @@ const PremierCalc = () => {
                   <input
                     className={styles.input}
                     value={desiredRating}
-                    onChange={handleDesiredRatingChange}
+                    onChange={handleDesiredRatingInputChange}
+                    onBlur={handleDesiredRatingChange}
                   />
                   <span className={styles.span}>
                     ELO
@@ -120,6 +198,7 @@ const PremierCalc = () => {
             </div>
           </div>
         </div>
+
       </div>
       <div className={styles.switches}>
         <div className={styles.switchBody}>

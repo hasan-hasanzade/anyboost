@@ -21,11 +21,15 @@ const PremierCalibrationCalc = () => {
 
   const basePrice = 0;
   const calculatePrice = () => {
-    let price = basePrice + (wins * 500);
-    if (options.priority) price += 200;
-    if (options.express) price += 300;
-    if (options.stream) price += 100;
-    return price;
+    let price = basePrice + (wins * 240);
+    if (options.noAccountTransfer) price *= 1.2;
+    if (options.solo) price *= 1.55;
+    if (options.priority) price *= 1.25;
+    if (options.express) price *= 1.6;
+    if (options.stream) price *= 1.15;
+    if (options.steamOffline) price *= 1.0; // No change for steamOffline
+
+    return price.toFixed(2);
   };
 
   const handleOptionChange = (option) => {
@@ -35,42 +39,11 @@ const PremierCalibrationCalc = () => {
     }));
   };
 
-  const elo = [
-    "Без звания",
-    "Серый",
-    "Голубой",
-    "Синий",
-    "Фиолетовый",
-    "Розовый",
-    "Красный",
-    "Золотой",
-  ];
-
-  const images = [
-    "/calc/levels/0.png",
-    "/calc/levels/1.png",
-    "/calc/levels/2.png",
-    "/calc/levels/3.png",
-    "/calc/levels/4.png",
-    "/calc/levels/5.png",
-    "/calc/levels/6.png",
-    "/calc/levels/7.png",
-  ];
-
-  const incrementRating = () => {
-    if (currentRatingIndex < elo.length - 1) {
-      setCurrentRatingIndex(currentRatingIndex + 1);
-    }
-  };
-
-  const decrementRating = () => {
-    if (currentRatingIndex > 0) {
-      setCurrentRatingIndex(currentRatingIndex - 1);
-    }
-  };
 
   const incrementWins = () => {
-    setWins(wins + 1);
+    if (wins < 10) {
+      setWins(wins + 1);
+    }
   };
 
   const decrementWins = () => {
@@ -80,7 +53,7 @@ const PremierCalibrationCalc = () => {
   };
 
   const handleWinsChange = (e) => {
-    const value = Math.max(0, Number(e.target.value));
+    const value = Math.max(0, Math.min(10, Number(e.target.value)));
     setWins(value);
   };
 
@@ -88,19 +61,19 @@ const PremierCalibrationCalc = () => {
     <div className={styles.body}>
       <div className={styles.calcs}>
         <div className={styles.item}>
-          <Image src={images[currentRatingIndex]} width={32} height={100} alt="звания" />
+          <Image src='/calc/levels/0.png' width={32} height={100} alt="звания" />
           <div className={styles.currentRating}>
             <div className={styles.currentCalc}>
-              <button className={styles.minus} onClick={decrementRating}>-</button>
+              <button className={styles.minus}>-</button>
               <div className={styles.center}>
                 <div className={styles.currentTitle}>ТЕКУЩИЙ РЕЙТИНГ</div>
                 <div className={styles.inputWrapper}>
                   <span className={styles.span}>
-                    {elo[currentRatingIndex]}
+                    Без Звания
                   </span>
                 </div>
               </div>
-              <button className={styles.plus} onClick={incrementRating}>+</button>
+              <button className={styles.plus}>+</button>
             </div>
           </div>
         </div>

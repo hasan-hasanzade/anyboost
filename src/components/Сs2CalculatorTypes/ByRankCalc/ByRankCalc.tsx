@@ -21,21 +21,6 @@ const ByRankCalc = () => {
   const [price, setPrice] = useState(0);
 
   const basePrice = 0;
-  const calculatePrice = () => {
-    let price = basePrice;
-    if (options.priority) price += 200;
-    if (options.express) price += 300;
-    if (options.stream) price += 100;
-    price += (desiredRatingIndex - currentRatingIndex) * 700; // Calculate price based on desired rating
-    return price;
-  };
-
-  const handleOptionChange = (option) => {
-    setOptions((prevOptions) => ({
-      ...prevOptions,
-      [option]: !prevOptions[option],
-    }));
-  };
 
   const elo = [
     "Серебро-1",
@@ -79,12 +64,57 @@ const ByRankCalc = () => {
     "/calc/ranks/18.png",
   ];
 
+  const rankPrices = {
+    "Серебро-1": 145,
+    "Серебро-2": 145,
+    "Серебро-3": 145,
+    "Серебро-4": 145,
+    "Серебро-Элита": 145,
+    "Серебро-Великий Магистр": 145,
+    "Золотая Звезда-1": 210,
+    "Золотая Звезда-2": 210,
+    "Золотая Звезда-3": 210,
+    "Золотая Звезда-Магистр": 210,
+    "Магистр Хранитель-1": 300,
+    "Магистр Хранитель-2": 300,
+    "Магистр Хранитель-Элита": 300,
+    "Заслуженный Магистр-Хранитель": 390,
+    "Легендарный Беркут": 520,
+    "Легендарный Беркут-Магистр": 720,
+    "Великий Магистр Высшего Ранга": 990,
+    "Всемирная Элита": 1540,
+  };
+
+  const calculatePrice = () => {
+    let price = basePrice;
+
+    for (let i = currentRatingIndex + 1; i <= desiredRatingIndex; i++) {
+      price += rankPrices[elo[i]];
+    }
+
+    if (options.noAccountTransfer) price *= 1.2;
+    if (options.solo) price *= 1.55;
+    if (options.priority) price *= 1.25;
+    if (options.express) price *= 1.6;
+    if (options.stream) price *= 1.15;
+    if (options.steamOffline) price *= 1.0;
+
+    return price.toFixed(2);
+  };
+
+  const handleOptionChange = (option) => {
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      [option]: !prevOptions[option],
+    }));
+  };
+
   const handleCurrentRatingChange = (direction) => {
     setCurrentRatingIndex((prevIndex) => {
       const newIndex = prevIndex + direction;
       if (newIndex < 0) return 0;
       if (newIndex >= elo.length) return elo.length - 1;
-      setDesiredRatingIndex(newIndex); // Update desired rating to match the current rating
+      setDesiredRatingIndex(newIndex); 
       return newIndex;
     });
   };
@@ -94,7 +124,6 @@ const ByRankCalc = () => {
       const newIndex = prevIndex + direction;
       if (newIndex < currentRatingIndex) return currentRatingIndex;
       if (newIndex >= elo.length) return elo.length - 1;
-      setPrice((prevPrice) => prevPrice + 700 * direction); // Update price
       return newIndex;
     });
   };
