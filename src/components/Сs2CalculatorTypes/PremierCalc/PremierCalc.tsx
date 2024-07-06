@@ -69,7 +69,7 @@ const PremierCalc = () => {
 
   const handleAddCurrentRating = () => {
     setCurrentRating((prevRating) => {
-      if (prevRating === 29800) {
+      if (prevRating === 29800 || prevRating === 30000) {
         const newRating = prevRating;
         setDesiredRating((desired) => Math.max(desired));
         return newRating;

@@ -108,7 +108,7 @@ const FiEloCalc = () => {
 
   const handleAddCurrentRating = () => {
     setCurrentRating((prevRating) => {
-      if (prevRating === 2975) {
+      if (prevRating === 2975 || prevRating === 3000) {
         const newRating = prevRating;
         setDesiredRating((desired) => Math.max(desired));
         return newRating;
