@@ -44,7 +44,6 @@ const FiByLevelCalc = () => {
   };
 
   const elo = [
-    "Без уровня",
     "1 уровень",
     "2 уровень",
     "3 уровень",
@@ -58,7 +57,6 @@ const FiByLevelCalc = () => {
   ];
 
   const images = [
-    "/calc/faceit/0.png",
     "/calc/faceit/1.png",
     "/calc/faceit/2.png",
     "/calc/faceit/3.png",
@@ -73,7 +71,6 @@ const FiByLevelCalc = () => {
   ];
 
   const levelPrices = {
-    "Без уровня": 0,
     "1 уровень": 0,
     "2 уровень": 430,
     "3 уровень": 510,

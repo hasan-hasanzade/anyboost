@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Tooltip } from 'react-tooltip';
 import Link from 'next/link';
 
-const PremierCalc = ({ tabType }) => {
+const PremierCalc = () => {
   const [options, setOptions] = useState({
     noAccountTransfer: false,
     solo: false,
@@ -162,7 +162,6 @@ const PremierCalc = ({ tabType }) => {
                     className={styles.input}
                     value={currentRating}
                     onChange={handleCurrentRatingChange}
-                    disabled={tabType === 'premier'}
                   />
                   <span className={styles.span}>
                     ELO

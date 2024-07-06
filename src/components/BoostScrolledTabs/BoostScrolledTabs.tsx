@@ -5,7 +5,6 @@ import PremierCalc from '../Сs2CalculatorTypes/PremierCalc/PremierCalc';
 import PremierCalibrationCalc from '../Сs2CalculatorTypes/PremierCalibrationCalc/PremierCalibrationCalc';
 import RankCalc from '../Сs2CalculatorTypes/ByRankCalc/ByRankCalc';
 import ByWinsCalc from '../Сs2CalculatorTypes/ByWinsCalc/ByWinsCalc';
-import CalibrationCalc from '../Сs2CalculatorTypes/CalibrationCalc/CalibrationCalc';
 import PartnersInRankCalc from '../Сs2CalculatorTypes/PartnersInRankCalc/PartnersInRankCalc';
 import PartnersInWinCalc from '../Сs2CalculatorTypes/PartnersInWinCalc/PartnersInWinCalc';
 import PartnersCalibrationCalc from '../Сs2CalculatorTypes/PartnersCalibrationCalc/PartnersCalibrationCalc';
@@ -35,8 +34,6 @@ const BoostScrolledTabs: React.FC<BoostScrolledTabsProps> = ({ tabNames }) => {
         return <RankCalc />;
       case 'cs2_wins':
         return <ByWinsCalc />;
-      case 'cs2_calibration':
-        return <CalibrationCalc />;
       case 'cs2_partners_rank':
         return <PartnersInRankCalc />;
       case 'cs2_partners_wins':
