@@ -41,27 +41,6 @@ const AccountSettings = () => {
         <div className={styles.content}>
           <form className={styles.form}>
             <div className={styles.inputWrapper}>
-              <label className={`${styles.label} ${(isLoginFocused || login) ? styles.active : ''}`}>
-                Логин
-              </label>
-              <input
-                className={styles.input}
-                type="text"
-                value={login}
-                onChange={(e) => setLogin(e.target.value)}
-                onFocus={() => setLoginFocused(true)}
-                onBlur={() => setLoginFocused(false)}
-              />
-              {login && (
-                <img
-                  src="/inputs/edit.svg"
-                  className={styles.clearIcon}
-                  onClick={() => clearInput(setLogin)}
-                  alt="clear input"
-                />
-              )}
-            </div>
-            <div className={styles.inputWrapper}>
               <label className={`${styles.label} ${(isPhoneFocused || phone) ? styles.active : ''}`}>
                 Номер Телефона
               </label>

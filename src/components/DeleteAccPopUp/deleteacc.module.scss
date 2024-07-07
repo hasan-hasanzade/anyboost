@@ -86,7 +86,8 @@
 .modalActions {
     margin-top: 24px;
     display: flex;
-
+    flex-direction: column;
+    gap: 14px;
 }
 
 .modalBtnDelete {

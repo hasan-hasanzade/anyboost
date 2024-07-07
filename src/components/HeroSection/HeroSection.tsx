@@ -16,10 +16,10 @@ const HeroSection = () => {
                     <p className={styles.text}>С нашим про-ресурсом беспокоиться не придется. Быстрый и надежный буст твоего аккаунта в Counter-Strike 2</p>
                     <div className={styles.buttons}>
 
-                            <Link className={styles.btnRegular} href='#'>Рассчитать буст</Link>
+                            <Link className={styles.btnRegular} href='#calcs'>Рассчитать буст</Link>
                         
             
-                            <Link className={styles.btnDark} href='#'>Узнать больше</Link>
+                            <Link className={styles.btnDark} href='#benefits'>Узнать больше</Link>
  
                     </div>
                 </div>

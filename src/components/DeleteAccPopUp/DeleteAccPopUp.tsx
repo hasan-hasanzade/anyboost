@@ -45,6 +45,7 @@ const DeleteAccPopUp = ({ onClose }) => {
                 </div>
             <div className={styles.modalActions}>
             <button className={styles.modalBtnDelete} onClick={onClose}>Удалить аккаунт</button>
+            <button className={styles.modalBtn} onClick={onClose}>Отмена</button>
             </div>
             </div>
         </div>

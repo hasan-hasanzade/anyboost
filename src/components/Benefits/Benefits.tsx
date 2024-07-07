@@ -3,7 +3,7 @@ import styles from './benefits.module.scss';
 
 const Benefits = () => {
   return (
-    <div className={styles.about}>
+    <div id='benefits' className={styles.about}>
       <div className="container">
         <div className={styles.body}>
             <div className={styles.item}>

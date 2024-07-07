@@ -27,7 +27,7 @@ const PremierCalibrationCalc = () => {
     if (options.priority) price *= 1.25;
     if (options.express) price *= 1.6;
     if (options.stream) price *= 1.15;
-    if (options.steamOffline) price *= 1.0; // No change for steamOffline
+    if (options.steamOffline) price *= 1.0;
 
     return price.toFixed(2);
   };

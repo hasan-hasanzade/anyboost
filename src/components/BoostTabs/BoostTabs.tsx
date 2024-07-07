@@ -21,20 +21,22 @@ const tabNamesFace = [
 
 const BoostTabs = () => {
   return (
-    <Tabs>  
-      <div className="container">
-        <TabList>
-          <Tab>CS2</Tab>
-          <Tab>FaceIT</Tab>
-        </TabList>
-      </div>
-      <TabPanel>
-        <BoostCounter tabNames={tabNamesCs} />
-      </TabPanel>
-      <TabPanel>
-        <BoostCounter tabNames={tabNamesFace} />
-      </TabPanel>
-    </Tabs>
+    <div id='calcs'>
+      <Tabs>  
+        <div className="container">
+          <TabList>
+            <Tab>CS2</Tab>
+            <Tab>FaceIT</Tab>
+          </TabList>
+        </div>
+        <TabPanel>
+          <BoostCounter tabNames={tabNamesCs} />
+        </TabPanel>
+        <TabPanel>
+          <BoostCounter tabNames={tabNamesFace} />
+        </TabPanel>
+      </Tabs>
+    </div>
   );
 }
 
