@@ -1,5 +1,10 @@
 @import '../../../scss/colors.scss';
 
+.btn {
+    background-color: $primaryBlue;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
 
 .dataTable {
     width: 100%;
@@ -7,9 +12,6 @@
     color: #ffffff;
     font-size: 16px;
     font-weight: 500;
-    th:last-child {
-        text-align: right;
-    }
 
 }
 
@@ -38,10 +40,4 @@
     td:last-child {
         text-align: right;
     }
-}
-
-.btn {
-    background-color: $primaryBlue;
-    padding: 8px 12px;
-    border-radius: 8px;
 }
