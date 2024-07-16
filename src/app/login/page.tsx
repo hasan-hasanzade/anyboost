@@ -1,22 +1,37 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
-import styles from './login.module.scss';
-import Link from 'next/link';
+import React, { useState } from "react";
+import styles from "./login.module.scss";
+import Link from "next/link";
+import { useSignInMutation } from "@/store/services/authApi";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
-  const [phoneOrEmail, setPhoneOrEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [phoneOrEmail, setPhoneOrEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isPhoneOrEmailFocused, setPhoneOrEmailFocused] = useState(false);
   const [isPasswordFocused, setPasswordFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const [signIn] = useSignInMutation();
+  const router = useRouter();
+
+  const handleSignIn = () => {
+    signIn({ email: phoneOrEmail, password }).then((r) => {
+      if (r?.data?.isBooster) {
+        router.push("/booster");
+      } else {
+        router.push("/member");
+      }
+    });
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
   const clearPhoneOrEmail = () => {
-    setPhoneOrEmail('');
+    setPhoneOrEmail("");
   };
 
   return (
@@ -27,10 +42,20 @@ const Login = () => {
             <div className={styles.welcome}>Добро пожаловать,</div>
             <div className={styles.text}>Войди в свой аккаунт</div>
           </div>
-          <form className={styles.form}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSignIn();
+            }}
+            className={styles.form}
+          >
             <div className={styles.inputWrapper}>
-              <label className={`${styles.label} ${(isPhoneOrEmailFocused || phoneOrEmail) ? styles.active : ''}`}>
-                Номер телефона или почта
+              <label
+                className={`${styles.label} ${
+                  isPhoneOrEmailFocused || phoneOrEmail ? styles.active : ""
+                }`}
+              >
+                Почта
               </label>
               <input
                 className={styles.input}
@@ -50,19 +75,25 @@ const Login = () => {
               )}
             </div>
             <div className={styles.inputWrapper}>
-              <label className={`${styles.label} ${(isPasswordFocused || password) ? styles.active : ''}`}>
+              <label
+                className={`${styles.label} ${
+                  isPasswordFocused || password ? styles.active : ""
+                }`}
+              >
                 Пароль
               </label>
               <input
                 className={styles.input}
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onFocus={() => setPasswordFocused(true)}
                 onBlur={() => setPasswordFocused(false)}
               />
               <img
-                src={`/inputs/${showPassword ? 'visibility_off' : 'visibility'}.svg`}
+                src={`/inputs/${
+                  showPassword ? "visibility_off" : "visibility"
+                }.svg`}
                 className={styles.eyeIcon}
                 onClick={togglePasswordVisibility}
                 alt="toggle visibility"
@@ -72,7 +103,9 @@ const Login = () => {
             <button className={styles.btn}>Войти</button>
             <div className={styles.info}>
               <div className={styles.account}>Нет аккаунта?</div>
-              <Link href='/register' className={styles.register}>Зарегистрироваться</Link>
+              <Link href="/register" className={styles.register}>
+                Зарегистрироваться
+              </Link>
             </div>
           </form>
         </div>

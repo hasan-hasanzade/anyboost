@@ -1,9 +1,10 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
-import styles from '../../Calculator/calculator.module.scss';
-import Image from 'next/image';
-import { Tooltip } from 'react-tooltip';
+import React, { useState } from "react";
+import styles from "../../Calculator/calculator.module.scss";
+import Image from "next/image";
+import { Tooltip } from "react-tooltip";
+import Link from "next/link";
 
 const FiEloCalc = () => {
   const [options, setOptions] = useState({
@@ -17,7 +18,7 @@ const FiEloCalc = () => {
 
   const [currentRating, setCurrentRating] = useState(0);
   const [desiredRating, setDesiredRating] = useState(0);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const basePrice = 0;
 
   const images = [
@@ -53,39 +54,39 @@ const FiEloCalc = () => {
     const eloDifference = Math.max(0, desiredRating - currentRating);
 
     const ratingRanges = [
-        { max: 500, price: 2.92 },
-        { max: 750, price: 3.04 },
-        { max: 1050, price: 3.08 },
-        { max: 1200, price: 3.96 },
-        { max: 1350, price: 5.2 },
-        { max: 1530, price: 5.6 },
-        { max: 1750, price: 6 },
-        { max: 2000, price: 7.4 },
-        { max: 2200, price: 15 },
-        { max: 2400, price: 18.4 },
-        { max: 2500, price: 19.6 },
-        { max: 2600, price: 27.6 },
-        { max: 2700, price: 29 },
-        { max: 2800, price: 31.2 },
-        { max: 2900, price: 34 },
-        { max: 3000, price: 38.4 }
+      { max: 500, price: 2.92 },
+      { max: 750, price: 3.04 },
+      { max: 1050, price: 3.08 },
+      { max: 1200, price: 3.96 },
+      { max: 1350, price: 5.2 },
+      { max: 1530, price: 5.6 },
+      { max: 1750, price: 6 },
+      { max: 2000, price: 7.4 },
+      { max: 2200, price: 15 },
+      { max: 2400, price: 18.4 },
+      { max: 2500, price: 19.6 },
+      { max: 2600, price: 27.6 },
+      { max: 2700, price: 29 },
+      { max: 2800, price: 31.2 },
+      { max: 2900, price: 34 },
+      { max: 3000, price: 38.4 },
     ];
 
     if (eloDifference > 0) {
-        let remainingDifference = eloDifference;
-        let currentThreshold = currentRating;
+      let remainingDifference = eloDifference;
+      let currentThreshold = currentRating;
 
-        for (let i = 0; i < ratingRanges.length; i++) {
-            const range = ratingRanges[i];
-            const rangeMax = Math.min(range.max, desiredRating);
-            if (currentThreshold < rangeMax) {
-                const rangeDifference = rangeMax - currentThreshold;
-                price += rangeDifference * range.price;
-                currentThreshold = rangeMax;
-                remainingDifference -= rangeDifference;
-            }
-            if (remainingDifference <= 0) break;
+      for (let i = 0; i < ratingRanges.length; i++) {
+        const range = ratingRanges[i];
+        const rangeMax = Math.min(range.max, desiredRating);
+        if (currentThreshold < rangeMax) {
+          const rangeDifference = rangeMax - currentThreshold;
+          price += rangeDifference * range.price;
+          currentThreshold = rangeMax;
+          remainingDifference -= rangeDifference;
         }
+        if (remainingDifference <= 0) break;
+      }
     }
 
     if (options.noAccountTransfer) price *= 1.2;
@@ -96,8 +97,7 @@ const FiEloCalc = () => {
     if (options.steamOffline) price *= 1.0;
 
     return price.toFixed(2);
-};
-
+  };
 
   const handleOptionChange = (option: string) => {
     setOptions((prevOptions) => ({
@@ -117,7 +117,6 @@ const FiEloCalc = () => {
         setDesiredRating((desired) => Math.max(desired, newRating + 25));
         return newRating;
       }
-      
     });
   };
 
@@ -133,24 +132,27 @@ const FiEloCalc = () => {
     if (desiredRating === 3000) {
       setDesiredRating((prevRating) => Math.max(currentRating, prevRating));
     } else {
-      setDesiredRating((prevRating) => Math.max(currentRating + 25, prevRating + 25));
+      setDesiredRating((prevRating) =>
+        Math.max(currentRating + 25, prevRating + 25)
+      );
     }
-    setErrorMessage('');
+    setErrorMessage("");
   };
 
   const handleSubtractDesiredRating = () => {
     if (currentRating === 3000) {
       setDesiredRating((prevRating) => Math.max(currentRating, prevRating));
     } else {
-      setDesiredRating((prevRating) => Math.max(currentRating + 25, prevRating - 25));
+      setDesiredRating((prevRating) =>
+        Math.max(currentRating + 25, prevRating - 25)
+      );
     }
   };
-
 
   const handleCurrentRatingChange = (e) => {
     const numericValue = parseInt(e.target.value) || 0;
     const value = Math.max(0, Math.min(3000, numericValue));
-  
+
     if (/^[0-9]{0,5}$/.test(value.toString())) {
       setCurrentRating(value);
       if (value === 3000) {
@@ -158,24 +160,30 @@ const FiEloCalc = () => {
       } else {
         setDesiredRating((desired) => Math.max(desired, value + 25));
       }
-      setErrorMessage('');
+      setErrorMessage("");
     }
   };
 
   const handleDesiredRatingChange = (e) => {
     const value = e.target.value.trim();
-    if (value === '') {
+    if (value === "") {
       setDesiredRating(currentRating + 25);
-      setErrorMessage('Желаемый рейтинг не может быть пустым.');
+      setErrorMessage("Желаемый рейтинг не может быть пустым.");
     } else {
       const numericValue = parseInt(value);
-      if (isNaN(numericValue) || numericValue < currentRating || numericValue > 35000) {
-        setErrorMessage('Желаемый рейтинг должен быть числом между текущим рейтингом и 35000.');
+      if (
+        isNaN(numericValue) ||
+        numericValue < currentRating ||
+        numericValue > 35000
+      ) {
+        setErrorMessage(
+          "Желаемый рейтинг должен быть числом между текущим рейтингом и 35000."
+        );
       } else if (numericValue < currentRating + 25) {
-        setErrorMessage('Минимальный заказ 25 Elo.');
+        setErrorMessage("Минимальный заказ 25 Elo.");
       } else {
         setDesiredRating(numericValue);
-        setErrorMessage('');
+        setErrorMessage("");
       }
     }
   };
@@ -184,7 +192,7 @@ const FiEloCalc = () => {
     const value = e.target.value;
     if (/^[0-9]{0,4}$/.test(value)) {
       setDesiredRating(value);
-      setErrorMessage('');
+      setErrorMessage("");
     }
   };
 
@@ -201,46 +209,61 @@ const FiEloCalc = () => {
           />
           <div className={styles.currentRating}>
             <div className={styles.currentCalc}>
-              <button className={styles.subtract} onClick={handleSubtractCurrentRating}>-25</button>
+              <button
+                className={styles.subtract}
+                onClick={handleSubtractCurrentRating}
+              >
+                -25
+              </button>
               <div className={styles.center}>
                 <div className={styles.currentTitle}>ТЕКУЩИЙ РЕЙТИНГ</div>
                 <div className={styles.inputWrapper}>
-                <input
+                  <input
                     className={styles.input}
                     value={currentRating}
                     onChange={handleCurrentRatingChange}
                   />
-                  <span className={styles.span}>
-                    ELO
-                  </span>
+                  <span className={styles.span}>ELO</span>
                 </div>
               </div>
-              <button className={styles.add} onClick={handleAddCurrentRating}>+25</button>
+              <button className={styles.add} onClick={handleAddCurrentRating}>
+                +25
+              </button>
             </div>
           </div>
         </div>
         <div className={styles.arrow}>
-          <Image src="/calc/straight.svg" alt="стрелка" width={42} height={40} />
+          <Image
+            src="/calc/straight.svg"
+            alt="стрелка"
+            width={42}
+            height={40}
+          />
         </div>
         <div className={styles.item}>
           <div className={styles.desiredRating}>
             <div className={styles.desiredCalc}>
-              <button className={styles.subtract} onClick={handleSubtractDesiredRating}>-25</button>
+              <button
+                className={styles.subtract}
+                onClick={handleSubtractDesiredRating}
+              >
+                -25
+              </button>
               <div className={styles.center}>
                 <div className={styles.desiredTitle}>Желаемый Рейтинг</div>
                 <div className={styles.inputWrapper}>
-                <input
+                  <input
                     className={styles.input}
                     value={desiredRating}
                     onChange={handleDesiredRatingInputChange}
                     onBlur={handleDesiredRatingChange}
                   />
-                  <span className={styles.span}>
-                    ELO
-                  </span>
+                  <span className={styles.span}>ELO</span>
                 </div>
               </div>
-              <button className={styles.add} onClick={handleAddDesiredRating}>+25</button>
+              <button className={styles.add} onClick={handleAddDesiredRating}>
+                +25
+              </button>
             </div>
           </div>
           <Image
@@ -260,14 +283,24 @@ const FiEloCalc = () => {
                 className={styles.switch}
                 type="checkbox"
                 checked={options.noAccountTransfer}
-                onChange={() => handleOptionChange('noAccountTransfer')}
+                onChange={() => handleOptionChange("noAccountTransfer")}
               />
               <span className={styles.slider}></span>
               <span className={styles.switchTitle}>БЕЗ ПЕРЕДАЧИ АККАУНТА</span>
               <a className="tooltip">
-                <Image className={styles.switchTooltip} src='/calc/info.svg' width={14} height={14} alt='информация' />
+                <Image
+                  className={styles.switchTooltip}
+                  src="/calc/info.svg"
+                  width={14}
+                  height={14}
+                  alt="информация"
+                />
               </a>
-              <Tooltip anchorSelect=".tooltip" style={{ backgroundColor: "rgba(73, 113, 255, 1)" }} place="top">
+              <Tooltip
+                anchorSelect=".tooltip"
+                style={{ backgroundColor: "rgba(73, 113, 255, 1)" }}
+                place="top"
+              >
                 Описание
               </Tooltip>
             </label>
@@ -276,14 +309,24 @@ const FiEloCalc = () => {
                 className={styles.switch}
                 type="checkbox"
                 checked={options.solo}
-                onChange={() => handleOptionChange('solo')}
+                onChange={() => handleOptionChange("solo")}
               />
               <span className={styles.slider}></span>
               <span className={styles.switchTitle}>В соло</span>
               <a className="tooltip">
-                <Image className={styles.switchTooltip} src='/calc/info.svg' width={14} height={14} alt='информация' />
+                <Image
+                  className={styles.switchTooltip}
+                  src="/calc/info.svg"
+                  width={14}
+                  height={14}
+                  alt="информация"
+                />
               </a>
-              <Tooltip anchorSelect=".tooltip" style={{ backgroundColor: "rgba(73, 113, 255, 1)" }} place="top">
+              <Tooltip
+                anchorSelect=".tooltip"
+                style={{ backgroundColor: "rgba(73, 113, 255, 1)" }}
+                place="top"
+              >
                 Описание
               </Tooltip>
             </label>
@@ -292,14 +335,24 @@ const FiEloCalc = () => {
                 className={styles.switch}
                 type="checkbox"
                 checked={options.steamOffline}
-                onChange={() => handleOptionChange('steamOffline')}
+                onChange={() => handleOptionChange("steamOffline")}
               />
               <span className={styles.slider}></span>
               <span className={styles.switchTitle}>STEAM OFFLINE</span>
               <a className="tooltip">
-                <Image className={styles.switchTooltip} src='/calc/info.svg' width={14} height={14} alt='информация' />
+                <Image
+                  className={styles.switchTooltip}
+                  src="/calc/info.svg"
+                  width={14}
+                  height={14}
+                  alt="информация"
+                />
               </a>
-              <Tooltip anchorSelect=".tooltip" style={{ backgroundColor: "rgba(73, 113, 255, 1)" }} place="top">
+              <Tooltip
+                anchorSelect=".tooltip"
+                style={{ backgroundColor: "rgba(73, 113, 255, 1)" }}
+                place="top"
+              >
                 Описание
               </Tooltip>
             </label>
@@ -310,14 +363,24 @@ const FiEloCalc = () => {
                 className={styles.switch}
                 type="checkbox"
                 checked={options.priority}
-                onChange={() => handleOptionChange('priority')}
+                onChange={() => handleOptionChange("priority")}
               />
               <span className={styles.slider}></span>
               <span className={styles.switchTitle}>Priority</span>
               <a className="tooltip">
-                <Image className={styles.switchTooltip} src='/calc/info.svg' width={14} height={14} alt='информация' />
+                <Image
+                  className={styles.switchTooltip}
+                  src="/calc/info.svg"
+                  width={14}
+                  height={14}
+                  alt="информация"
+                />
               </a>
-              <Tooltip anchorSelect=".tooltip" style={{ backgroundColor: "rgba(73, 113, 255, 1)" }} place="top">
+              <Tooltip
+                anchorSelect=".tooltip"
+                style={{ backgroundColor: "rgba(73, 113, 255, 1)" }}
+                place="top"
+              >
                 Описание
               </Tooltip>
             </label>
@@ -326,14 +389,24 @@ const FiEloCalc = () => {
                 className={styles.switch}
                 type="checkbox"
                 checked={options.express}
-                onChange={() => handleOptionChange('express')}
+                onChange={() => handleOptionChange("express")}
               />
               <span className={styles.slider}></span>
               <span className={styles.switchTitle}>Экспресс</span>
               <a className="tooltip">
-                <Image className={styles.switchTooltip} src='/calc/info.svg' width={14} height={14} alt='информация' />
+                <Image
+                  className={styles.switchTooltip}
+                  src="/calc/info.svg"
+                  width={14}
+                  height={14}
+                  alt="информация"
+                />
               </a>
-              <Tooltip anchorSelect=".tooltip" style={{ backgroundColor: "rgba(73, 113, 255, 1)" }} place="top">
+              <Tooltip
+                anchorSelect=".tooltip"
+                style={{ backgroundColor: "rgba(73, 113, 255, 1)" }}
+                place="top"
+              >
                 Описание
               </Tooltip>
             </label>
@@ -342,27 +415,48 @@ const FiEloCalc = () => {
                 className={styles.switch}
                 type="checkbox"
                 checked={options.stream}
-                onChange={() => handleOptionChange('stream')}
+                onChange={() => handleOptionChange("stream")}
               />
               <span className={styles.slider}></span>
               <span className={styles.switchTitle}>Стрим</span>
               <a className="tooltip">
-                <Image className={styles.switchTooltip} src='/calc/info.svg' width={14} height={14} alt='информация' />
+                <Image
+                  className={styles.switchTooltip}
+                  src="/calc/info.svg"
+                  width={14}
+                  height={14}
+                  alt="информация"
+                />
               </a>
-              <Tooltip anchorSelect=".tooltip" style={{ backgroundColor: "rgba(73, 113, 255, 1)" }} place="top">
+              <Tooltip
+                anchorSelect=".tooltip"
+                style={{ backgroundColor: "rgba(73, 113, 255, 1)" }}
+                place="top"
+              >
                 Описание
               </Tooltip>
             </label>
           </div>
         </div>
         <div className={styles.priceColumn}>
-          <div className={styles.priceText}>
-            ИТОГОВАЯ ЦЕНА:
+          <div className={styles.priceText}>ИТОГОВАЯ ЦЕНА:</div>
+          <div className={styles.price}>{calculatePrice()} ₽</div>
+          <div className={styles.submit}>
+            <Link
+              href={{
+                pathname: "/checkout",
+                query: {
+                  system: "Faceit",
+                  goal: `${desiredRating} ELO`,
+                  current: `${currentRating} ELO`,
+                  type: "По эло",
+                  price: calculatePrice(),
+                },
+              }}
+            >
+              ЗАКАЗАТЬ БУСТ
+            </Link>
           </div>
-          <div className={styles.price}>
-             {calculatePrice()} ₽
-          </div>
-          <button className={styles.submit}>ЗАКАЗАТЬ БУСТ</button>
         </div>
       </div>
     </div>

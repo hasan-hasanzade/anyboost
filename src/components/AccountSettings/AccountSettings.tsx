@@ -1,13 +1,23 @@
-'use client'
-import React, { useState, useEffect } from 'react';
-import styles from './settings.module.scss';
-import DeleteAccPopUp from '../DeleteAccPopUp/DeleteAccPopUp';
+"use client";
+import React, { useState, useEffect } from "react";
+import styles from "./settings.module.scss";
+import DeleteAccPopUp from "../DeleteAccPopUp/DeleteAccPopUp";
+import {
+  IUser,
+  useChangePasswordMutation,
+  useChangeUserMutation,
+} from "@/store/services/userApi";
 
-const AccountSettings = () => {
-  const [phone, setPhone] = useState('+87239842234');
-  const [email, setEmail] = useState('user@mail.tr');
-  const [login, setLogin] = useState('Username');
-  const [password, setPassword] = useState('asdfasdf');
+interface IProps {
+  user: IUser | undefined;
+}
+
+const AccountSettings = ({ user }: IProps) => {
+  const [phone, setPhone] = useState("+87239842234");
+  const [email, setEmail] = useState("");
+  const [login, setLogin] = useState("Username");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [isPhoneFocused, setPhoneFocused] = useState(false);
   const [isEmailFocused, setEmailFocused] = useState(false);
   const [isLoginFocused, setLoginFocused] = useState(false);
@@ -15,33 +25,54 @@ const AccountSettings = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
 
+  const [changeUser] = useChangeUserMutation();
+  const [changePassword] = useChangePasswordMutation();
+
   useEffect(() => {
     if (isModalVisible) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
   }, [isModalVisible]);
+
+  useEffect(() => {
+    if (user?.email) setEmail(user.email as string);
+  }, [user]);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
   const clearInput = (setFunction) => {
-    setFunction('');
+    setFunction("");
   };
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
+  const handleChangePassword = () => {
+    if (password === password2) {
+      changePassword({ newPassword: password }).then((_) =>
+        window.location.reload()
+      );
+    }
+  };
+
   return (
-    <div className={`${styles.settings} ${isModalVisible ? styles.blurred : ''}`}>
+    <div
+      className={`${styles.settings} ${isModalVisible ? styles.blurred : ""}`}
+    >
       <div className="container">
         <div className={styles.content}>
           <form className={styles.form}>
-            <div className={styles.inputWrapper}>
-              <label className={`${styles.label} ${(isPhoneFocused || phone) ? styles.active : ''}`}>
+            {/* <div className={styles.inputWrapper}>
+              <label
+                className={`${styles.label} ${
+                  isPhoneFocused || phone ? styles.active : ""
+                }`}
+              >
                 Номер Телефона
               </label>
               <input
@@ -60,9 +91,13 @@ const AccountSettings = () => {
                   alt="clear input"
                 />
               )}
-            </div>
+            </div> */}
             <div className={styles.inputWrapper}>
-              <label className={`${styles.label} ${(isEmailFocused || email) ? styles.active : ''}`}>
+              <label
+                className={`${styles.label} ${
+                  isEmailFocused || email ? styles.active : ""
+                }`}
+              >
                 Почта
               </label>
               <input
@@ -77,7 +112,7 @@ const AccountSettings = () => {
                 <img
                   src="/inputs/edit.svg"
                   className={styles.clearIcon}
-                  onClick={() => clearInput(setEmail)}
+                  onClick={() => changeUser({ email })}
                   alt="clear input"
                 />
               )}
@@ -85,38 +120,50 @@ const AccountSettings = () => {
           </form>
           <form className={styles.form}>
             <div className={styles.inputWrapper}>
-              <label className={`${styles.label} ${(isPasswordFocused || password) ? styles.active : ''}`}>
+              <label
+                className={`${styles.label} ${
+                  isPasswordFocused || password ? styles.active : ""
+                }`}
+              >
                 Новый Пароль
               </label>
               <input
                 className={styles.input}
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onFocus={() => setPasswordFocused(true)}
                 onBlur={() => setPasswordFocused(false)}
               />
               <img
-                src={`/inputs/${showPassword ? 'visibility_off' : 'visibility'}.svg`}
+                src={`/inputs/${
+                  showPassword ? "visibility_off" : "visibility"
+                }.svg`}
                 className={styles.eyeIcon}
                 onClick={togglePasswordVisibility}
                 alt="toggle visibility"
               />
             </div>
             <div className={styles.inputWrapper}>
-              <label className={`${styles.label} ${(isPasswordFocused || password) ? styles.active : ''}`}>
+              <label
+                className={`${styles.label} ${
+                  isPasswordFocused || password ? styles.active : ""
+                }`}
+              >
                 Подтверди новый Пароль
               </label>
               <input
                 className={styles.input}
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                type={showPassword ? "text" : "password"}
+                value={password2}
+                onChange={(e) => setPassword2(e.target.value)}
                 onFocus={() => setPasswordFocused(true)}
                 onBlur={() => setPasswordFocused(false)}
               />
               <img
-                src={`/inputs/${showPassword ? 'visibility_off' : 'visibility'}.svg`}
+                src={`/inputs/${
+                  showPassword ? "visibility_off" : "visibility"
+                }.svg`}
                 className={styles.eyeIcon}
                 onClick={togglePasswordVisibility}
                 alt="toggle visibility"
@@ -124,33 +171,32 @@ const AccountSettings = () => {
             </div>
             <div className={styles.switches}>
               <div className={styles.switchBody}>
-                  <div className={styles.column}>
-                    <label className={styles.switchLabel}>
-                        <input
-                            className={styles.switch}
-                            type="checkbox"
-                        />
-                        <span className={styles.slider}></span>
-                        <span className={styles.switchTitle}>Привязать steam</span>
-                    </label>
-                    <label className={styles.switchLabel}>
-                        <input
-                            className={styles.switch}
-                            type="checkbox"
-                        />
-                        <span className={styles.slider}></span>
-                        <span className={styles.switchTitle}>Включить уведомления</span>
-                    </label>
-                  </div>
+                <div className={styles.column}>
+                  <label className={styles.switchLabel}>
+                    <input className={styles.switch} type="checkbox" />
+                    <span className={styles.slider}></span>
+                    <span className={styles.switchTitle}>Привязать steam</span>
+                  </label>
+                  <label className={styles.switchLabel}>
+                    <input className={styles.switch} type="checkbox" />
+                    <span className={styles.slider}></span>
+                    <span className={styles.switchTitle}>
+                      Включить уведомления
+                    </span>
+                  </label>
+                </div>
               </div>
             </div>
-
           </form>
         </div>
         <div className={styles.formBtns}>
-        <button className={styles.btn} type="button" onClick={toggleModal}>Удалить аккаунт</button>
-        <button className={styles.changeBtn}>Сменить Пароль</button>
-      </div>
+          <button className={styles.btn} type="button" onClick={toggleModal}>
+            Удалить аккаунт
+          </button>
+          <button onClick={handleChangePassword} className={styles.changeBtn}>
+            Сменить Пароль
+          </button>
+        </div>
       </div>
 
       {isModalVisible && <DeleteAccPopUp onClose={toggleModal} />}

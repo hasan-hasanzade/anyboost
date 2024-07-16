@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Tabs, Tab } from "react-tabs-scrollable";
 import "react-tabs-scrollable/dist/rts.css";
-import PremierCalc from '../Сs2CalculatorTypes/PremierCalc/PremierCalc';
-import PremierCalibrationCalc from '../Сs2CalculatorTypes/PremierCalibrationCalc/PremierCalibrationCalc';
-import RankCalc from '../Сs2CalculatorTypes/ByRankCalc/ByRankCalc';
-import ByWinsCalc from '../Сs2CalculatorTypes/ByWinsCalc/ByWinsCalc';
-import PartnersInRankCalc from '../Сs2CalculatorTypes/PartnersInRankCalc/PartnersInRankCalc';
-import PartnersInWinCalc from '../Сs2CalculatorTypes/PartnersInWinCalc/PartnersInWinCalc';
-import PartnersCalibrationCalc from '../Сs2CalculatorTypes/PartnersCalibrationCalc/PartnersCalibrationCalc';
-import FiByLevelCalc from '../FaceItCalculatorTypes copy/FiByLevelCalc/FiByLevelCalc';
-import FiByWinsCalc from '../FaceItCalculatorTypes copy/FiByWinsCalc/FiByWinsCalc';
-import FiCalibrationCalc from '../FaceItCalculatorTypes copy/FiCalibrationCalc/FiCalibrationCalc';
-import FiEloCalc from '../FaceItCalculatorTypes copy/FiEloCalc/FiEloCalc';
+import PremierCalc from "../Сs2CalculatorTypes/PremierCalc/PremierCalc";
+import PremierCalibrationCalc from "../Сs2CalculatorTypes/PremierCalibrationCalc/PremierCalibrationCalc";
+import RankCalc from "../Сs2CalculatorTypes/ByRankCalc/ByRankCalc";
+import ByWinsCalc from "../Сs2CalculatorTypes/ByWinsCalc/ByWinsCalc";
+import PartnersInRankCalc from "../Сs2CalculatorTypes/PartnersInRankCalc/PartnersInRankCalc";
+import PartnersInWinCalc from "../Сs2CalculatorTypes/PartnersInWinCalc/PartnersInWinCalc";
+import PartnersCalibrationCalc from "../Сs2CalculatorTypes/PartnersCalibrationCalc/PartnersCalibrationCalc";
+import FiByLevelCalc from "../FaceItCalculatorTypes copy/FiByLevelCalc/FiByLevelCalc";
+import FiByWinsCalc from "../FaceItCalculatorTypes copy/FiByWinsCalc/FiByWinsCalc";
+import FiCalibrationCalc from "../FaceItCalculatorTypes copy/FiCalibrationCalc/FiCalibrationCalc";
+import FiEloCalc from "../FaceItCalculatorTypes copy/FiEloCalc/FiEloCalc";
 
 type BoostScrolledTabsProps = {
-  tabNames: { id: string, name: string }[];
+  tabNames: { id: string; name: string }[];
 };
 
 const BoostScrolledTabs: React.FC<BoostScrolledTabsProps> = ({ tabNames }) => {
@@ -26,27 +26,27 @@ const BoostScrolledTabs: React.FC<BoostScrolledTabsProps> = ({ tabNames }) => {
 
   const renderCalculator = (id: string) => {
     switch (id) {
-      case 'cs2_premier':
+      case "cs2_premier":
         return <PremierCalc />;
-      case 'cs2_premier_calibration':
+      case "cs2_premier_calibration":
         return <PremierCalibrationCalc />;
-      case 'cs2_rank':
+      case "cs2_rank":
         return <RankCalc />;
-      case 'cs2_wins':
+      case "cs2_wins":
         return <ByWinsCalc />;
-      case 'cs2_partners_rank':
+      case "cs2_partners_rank":
         return <PartnersInRankCalc />;
-      case 'cs2_partners_wins':
+      case "cs2_partners_wins":
         return <PartnersInWinCalc />;
-      case 'cs2_partners_calibration':
+      case "cs2_partners_calibration":
         return <PartnersCalibrationCalc />;
-      case 'faceit_elo':
+      case "faceit_elo":
         return <FiEloCalc />;
-      case 'faceit_level':
+      case "faceit_level":
         return <FiByLevelCalc />;
-      case 'faceit_wins':
+      case "faceit_wins":
         return <FiByWinsCalc />;
-      case 'faceit_calibration':
+      case "faceit_calibration":
         return <FiCalibrationCalc />;
       default:
         return null;
@@ -55,13 +55,20 @@ const BoostScrolledTabs: React.FC<BoostScrolledTabsProps> = ({ tabNames }) => {
 
   return (
     <div className="App">
-      <Tabs activeTab={activeTab} onTabClick={onTabClick} hideNavBtnsOnMobile={false}>
+      <Tabs
+        activeTab={activeTab}
+        onTabClick={onTabClick}
+        hideNavBtnsOnMobile={false}
+      >
         {tabNames.map((tab, index) => (
           <Tab key={tab.id}>{tab.name}</Tab>
         ))}
       </Tabs>
       {tabNames.map((tab, index) => (
-        <div className={`tabpanel ${activeTab === index ? 'active' : ''}`} key={tab.id}>
+        <div
+          className={`tabpanel ${activeTab === index ? "active" : ""}`}
+          key={tab.id}
+        >
           {activeTab === index && renderCalculator(tab.id)}
         </div>
       ))}

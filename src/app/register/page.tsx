@@ -1,17 +1,31 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
-import styles from './register.module.scss';
-import Link from 'next/link';
+import React, { useState } from "react";
+import styles from "./register.module.scss";
+import { useSignUpMutation } from "@/store/services/authApi";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
-  const [phoneOrEmail, setPhoneOrEmail] = useState('');
+  const router = useRouter();
+
+  const [phoneOrEmail, setPhoneOrEmail] = useState("");
 
   const [isPhoneOrEmailFocused, setPhoneOrEmailFocused] = useState(false);
 
+  const [isBooster, setIsBooster] = useState(false);
+
+  const [signUp] = useSignUpMutation();
+
+  const handleSignUp = () => {
+    signUp({ email: phoneOrEmail, isBooster })
+      .unwrap()
+      .then((r) => {
+        router.push("/register-success");
+      });
+  };
 
   const clearPhoneOrEmail = () => {
-    setPhoneOrEmail('');
+    setPhoneOrEmail("");
   };
 
   return (
@@ -20,11 +34,23 @@ const Register = () => {
         <div className={styles.content}>
           <div className={styles.heading}>
             <div className={styles.welcome}>Добро пожаловать,</div>
-            <div className={styles.text}>Укажи свой номер телефона или почту</div>
+            <div className={styles.text}>
+              Укажи свой номер телефона или почту
+            </div>
           </div>
-          <form className={styles.form}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSignUp();
+            }}
+            className={styles.form}
+          >
             <div className={styles.inputWrapper}>
-              <label className={`${styles.label} ${(isPhoneOrEmailFocused || phoneOrEmail) ? styles.active : ''}`}>
+              <label
+                className={`${styles.label} ${
+                  isPhoneOrEmailFocused || phoneOrEmail ? styles.active : ""
+                }`}
+              >
                 Номер телефона или почта
               </label>
               <input
@@ -46,27 +72,39 @@ const Register = () => {
             </div>
             <div className={styles.switches}>
               <div className={styles.switchBody}>
-                  <div className={styles.column}>
-                    <label className={styles.switchLabel}>
-                        <input
-                            className={styles.switch}
-                            type="checkbox"
-                        />
-                        <span className={styles.slider}></span>
-                        <span className={styles.switchTitle}>Участник</span>
-                    </label>
-                    <label className={styles.switchLabel}>
-                        <input
-                            className={styles.switch}
-                            type="checkbox"
-                        />
-                        <span className={styles.slider}></span>
-                        <span className={styles.switchTitle}>Бустер</span>
-                    </label>
-                  </div>
+                <div className={styles.column}>
+                  <label className={styles.switchLabel}>
+                    <input
+                      checked={!isBooster}
+                      onChange={(e) =>
+                        e.target.checked
+                          ? setIsBooster(false)
+                          : setIsBooster(true)
+                      }
+                      className={styles.switch}
+                      type="checkbox"
+                    />
+                    <span className={styles.slider}></span>
+                    <span className={styles.switchTitle}>Участник</span>
+                  </label>
+                  <label className={styles.switchLabel}>
+                    <input
+                      checked={isBooster}
+                      onChange={(e) =>
+                        e.target.checked
+                          ? setIsBooster(true)
+                          : setIsBooster(false)
+                      }
+                      className={styles.switch}
+                      type="checkbox"
+                    />
+                    <span className={styles.slider}></span>
+                    <span className={styles.switchTitle}>Бустер</span>
+                  </label>
+                </div>
               </div>
             </div>
-            <Link href='/register-success' className={styles.btn}>Продолжить</Link>
+            <button className={styles.btn}>Продолжить</button>
           </form>
         </div>
       </div>

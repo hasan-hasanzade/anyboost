@@ -16,6 +16,16 @@
   }
 }
 
+.error {
+  border: 1px solid #FF0000;
+  background-color: #4D2A25;
+
+}
+
+.errorTxt {
+  color: #FF6B4A;
+} 
+
 .content {
 
   @media (max-width: 1024px) {

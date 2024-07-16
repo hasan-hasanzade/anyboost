@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import DarkButton from '../DarkButton/DarkButton';
+import RegularButton from '../RegularButton/RegularButton';
 import styles from './header.module.scss';
 
 const Header = () => {
@@ -31,6 +32,8 @@ const Header = () => {
           </button>
           <nav className={`${styles.nav} ${menuOpen ? styles.open : ''}`}>
             <DarkButton title='Для участников' link='/login' onClick={closeMenu} />
+            {/* <RegularButton title='Личный кабинет' link='/login' onClick={closeMenu} />
+            <DarkButton title='Выйти' link='/login' onClick={closeMenu} /> */}
           </nav>
         </div>
       </div>
